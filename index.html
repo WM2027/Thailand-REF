@@ -1,25 +1,83 @@
 <!doctype html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Thailand Refrigerator Competitor Dashboard</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Thailand Refrigerator Price Battle Map</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header class="top"><div><div class="eyebrow">THAILAND REFRIGERATOR MARKET</div><h1>冰箱竞品阵容对阵图</h1><p>品牌 × 容量 × 价格 × 销量 × 核心配置 · 可持续更新</p></div><div class="badge">V1.0</div></header>
-<main>
-<section class="toolbar">
-<div><label>品牌</label><select id="brand"><option value="">全部品牌</option></select></div>
-<div><label>类型</label><select id="type"><option value="">全部类型</option></select></div>
-<div><label>容量</label><select id="capacity"><option value="">全部容量</option><option value="600+">600L+</option><option value="500-599">500–599L</option><option value="400-499">400–499L</option><option value="300-399">300–399L</option></select></div>
-<div><label>价格</label><select id="price"><option value="">全部价格</option><option value="0-29999">฿30,000 以下</option><option value="30000-49999">฿30,000–49,999</option><option value="50000-79999">฿50,000–79,999</option><option value="80000-999999">฿80,000+</option></select></div>
-<div class="search"><label>搜索</label><input id="search" placeholder="型号 / 卖点 / 品牌"></div>
-<button id="reset">重置</button>
-</section>
-<section class="stats"><div><b id="count">0</b><span>当前型号</span></div><div><b id="brands">0</b><span>品牌</span></div><div><b id="avg">—</b><span>平均促销价</span></div><div><b id="updated">—</b><span>最新更新</span></div></section>
-<section class="battle"><div class="section-title"><h2>市场阵容</h2><span id="resultText"></span></div><div id="grid" class="grid"></div></section>
-<section class="guide"><h2>怎么更新数据</h2><div class="steps"><div><b>01</b><p>先在本页面下方“数据源”设置 Google Sheets CSV 地址。</p></div><div><b>02</b><p>Google Sheet 每一行代表一个型号，字段按模板填写。</p></div><div><b>03</b><p>保存后刷新页面，竞品卡片、筛选和统计会自动更新。</p></div></div><div class="source"><label>Google Sheets CSV 地址</label><input id="sheetUrl" placeholder="https://docs.google.com/spreadsheets/d/.../export?format=csv"><button id="saveUrl">保存数据源</button><button id="loadSheet">立即读取</button><span id="sourceMsg">当前使用内置示例数据</span></div></section>
-<section class="schema"><h2>Google Sheet 字段模板</h2><p>建议列名：brand, model, image, type, grossL, netL, door, iceMaker, officialPrice, promoPrice, monthlySales, sellingPoints, updated, link</p></section>
-</main>
+<header class="topbar">
+  <div class="brandmark">REF</div>
+  <div class="titleblock">
+    <div class="eyebrow">THAILAND REFRIGERATOR MARKET</div>
+    <h1>泰国冰箱竞品价格对阵图</h1>
+    <p>LG × Haier × TOSHIBA × Hisense × Samsung × Hitachi × Sharp × TCL × Electrolux</p>
+  </div>
+  <div class="topmeta"><span>数据更新</span><b id="topUpdated">—</b><button id="refreshBtn">↻ 刷新页面</button></div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="filterHead"><b>FILTERS / 筛选</b><button id="reset">Reset</button></div>
+    <label>Search model / 搜索型号</label>
+    <input id="search" placeholder="例如 Inverter, RS808...">
+
+    <label>Channel / 渠道</label>
+    <select id="channel"><option value="">All / 全部</option></select>
+
+    <label>Brand / 品牌</label>
+    <select id="brand"><option value="">All / 全部</option></select>
+
+    <label>Category / 品类</label>
+    <select id="type"><option value="">All / 全部</option></select>
+
+    <label>Capacity / 容量</label>
+    <select id="capacity">
+      <option value="">All capacity / 全部</option>
+      <option value="600+">600L+</option>
+      <option value="500-599">500–599L</option>
+      <option value="400-499">400–499L</option>
+      <option value="300-399">300–399L</option>
+    </select>
+
+    <label>Price / 价格</label>
+    <select id="price">
+      <option value="">All price / 全部</option>
+      <option value="0-29999">฿30,000 以下</option>
+      <option value="30000-49999">฿30,000–49,999</option>
+      <option value="50000-79999">฿50,000–79,999</option>
+      <option value="80000-999999">฿80,000+</option>
+    </select>
+
+    <div class="statusBox">
+      <b>DATA STATUS / 数据状态</b>
+      <p>内置市场样本 · 可接 Google Sheets</p>
+      <p>价格：促销价优先</p>
+      <p>销量：未填不估算</p>
+    </div>
+  </aside>
+
+  <main class="main">
+    <section class="stats" id="stats"></section>
+
+    <section class="mapSection">
+      <div class="sectionTitle">
+        <div><div class="eyebrow blue">PRICE MAP</div><h2 id="mapTitle">All / 全部</h2></div>
+        <span>Promo price high to low · 点击产品打开零售商页面</span>
+      </div>
+      <div class="mapWrap" id="mapWrap"></div>
+    </section>
+
+    <section class="sheetPanel">
+      <div class="sectionTitle"><div><div class="eyebrow blue">DATA SOURCE</div><h2>Google Sheets 数据源</h2></div></div>
+      <p>把 Google Sheet 发布为 CSV 后粘贴地址。以后你只需要维护表格，页面即可读取最新阵容。</p>
+      <div class="sourceRow"><input id="sheetUrl" placeholder="https://docs.google.com/spreadsheets/d/.../export?format=csv"><button id="saveUrl">保存地址</button><button id="loadSheet" class="primary">读取 Sheet</button></div>
+      <span id="sourceMsg">当前使用内置市场样本</span>
+      <details><summary>字段模板</summary><code>brand, model, image, type, channel, grossL, netL, door, iceMaker, officialPrice, promoPrice, monthlySales, sellingPoints, updated, link</code></details>
+    </section>
+  </main>
+</div>
 <script src="app.js"></script>
-</body></html>
+</body>
+</html>
