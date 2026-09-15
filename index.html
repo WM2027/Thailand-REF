@@ -20,7 +20,7 @@
   <label>Category / 品类</label><select id="type"><option value="">All / 全部</option></select>
   <label>Capacity / 容量</label><select id="capacity"><option value="">All / 全部</option><option value="700+">700L+</option><option value="650-699">650–699L</option><option value="600-649">600–649L</option><option value="500-599">500–599L</option><option value="400-499">400–499L</option><option value="300-399">300–399L</option></select>
   <label>Price / 促销价</label><select id="price"><option value="">All / 全部</option><option value="0-19999">฿20,000 以下</option><option value="20000-29999">฿20,000–29,999</option><option value="30000-39999">฿30,000–39,999</option><option value="40000-49999">฿40,000–49,999</option><option value="50000-999999">฿50,000+</option></select>
-  <div class="statusBox"><b>DATA STATUS / 数据状态</b><p>渠道：KA / 家电 / 建材 / Hypermarket / 电商 / 直营 / 经销商</p><p>品类：SBS / CD / 1D / TM</p><p>图片：支持图片 URL</p><p>销量：只显示已填数据</p><p>价格：促销价优先</p><p>数据源：Google Sheets CSV</p></div>
+  <div class="statusBox"><b>DATA STATUS / 数据状态</b><p>渠道：KA / 家电 / 建材 / Hypermarket / 电商 / 直营 / 经销商</p><p>品类：SBS / CD / 1D / TM</p><p>CD定义：Cross Door，4门及以上</p><p>SBS：全部容量，不限 600L+</p><p>图片：支持图片 URL</p><p>销量：只显示已填数据</p><p>价格：促销价优先</p><p>数据源：Google Sheets CSV</p></div>
 </aside>
 <main class="main">
   <section class="stats" id="stats"></section>
@@ -34,7 +34,7 @@
 <script>
 (function(){
   const sel=document.getElementById('type');
-  const categories=[['SBS','SBS / Side-by-Side'],['CD','CD / French Door'],['1D','1D / Single Door'],['TM','TM / Top Mount']];
+  const categories=[['SBS','SBS / Side-by-Side'],['CD','CD / Cross Door（4门及以上）'],['1D','1D / Single Door'],['TM','TM / Top Mount']];
   const existing=new Set([...sel.options].map(o=>o.value));
   categories.forEach(([v,t])=>{if(!existing.has(v)){const o=document.createElement('option');o.value=v;o.textContent=t;sel.appendChild(o)}});
 })();
