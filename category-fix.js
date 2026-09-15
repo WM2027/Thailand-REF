@@ -30,10 +30,13 @@
     if (categoryOptions.some(([v]) => v === current)) el.value = current;
   }
 
-  // app.js creates the demo array first; append CD data once, then rebuild filters/render.
-  if (Array.isArray(window.products)) {
-    const existing = new Set(window.products.map(x => x.model));
-    window.products.push(...cdProducts.filter(x => !existing.has(x.model)));
+  // app.js defines products with let; this script runs immediately after app.js,
+  // so the same global lexical scope can access it directly.
+  try {
+    const existing = new Set(products.map(x => x.model));
+    products.push(...cdProducts.filter(x => !existing.has(x.model)));
+  } catch (e) {
+    console.warn('CD data append failed', e);
   }
 
   resetCategoryOptions();
@@ -46,9 +49,9 @@
     };
   }
 
-  // Re-render after CD records are appended.
-  if (typeof window.filtered === 'function' && typeof window.render === 'function') {
-    window.fillFilters && window.fillFilters();
+  // Re-render immediately so CD is visible without refresh.
+  if (typeof window.fillFilters === 'function' && typeof window.filtered === 'function' && typeof window.render === 'function') {
+    window.fillFilters();
     window.render(window.filtered());
   }
 })();
