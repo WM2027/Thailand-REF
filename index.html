@@ -1,112 +1,83 @@
 <!doctype html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Thailand Refrigerator Competitor Battle Map V2</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Thailand Refrigerator Price Battle Map</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header class="topbar">
   <div class="brandmark">REF</div>
-  <div class="titleblock"><div class="eyebrow">THAILAND REFRIGERATOR MARKET · V2</div><h1>泰国冰箱竞品阵容对阵图</h1><p>价格 × 容量 × 品牌 × 渠道 × 销量 · 图片化竞品数据库</p></div>
-  <div class="topmeta"><span>数据更新</span><b id="topUpdated">—</b><button id="refreshBtn">↻ 刷新</button></div>
+  <div class="titleblock">
+    <div class="eyebrow">THAILAND REFRIGERATOR MARKET</div>
+    <h1>泰国冰箱竞品价格对阵图</h1>
+    <p>LG × Haier × TOSHIBA × Hisense × Samsung × Hitachi × Sharp × TCL × Electrolux</p>
+  </div>
+  <div class="topmeta"><span>数据更新</span><b id="topUpdated">—</b><button id="refreshBtn">↻ 刷新页面</button></div>
 </header>
-<div class="layout">
-<aside class="sidebar">
-  <div class="filterHead"><b>FILTERS / 筛选</b><button id="reset">Reset</button></div>
-  <label>Search / 搜索</label><input id="search" placeholder="型号 / 卖点 / 品牌">
-  <label>Channel / 渠道</label><select id="channel"><option value="">All / 全部</option></select>
-  <label>Brand / 品牌</label><select id="brand"><option value="">All / 全部</option></select>
-  <label>Category / 品类</label><select id="type"><option value="">All / 全部</option></select>
-  <label>Capacity / 容量</label><select id="capacity"><option value="">All / 全部</option><option value="700+">700L+</option><option value="650-699">650–699L</option><option value="600-649">600–649L</option><option value="500-599">500–599L</option><option value="400-499">400–499L</option><option value="300-399">300–399L</option></select>
-  <label>Price / 促销价</label><select id="price"><option value="">All / 全部</option><option value="0-19999">฿20,000 以下</option><option value="20000-29999">฿20,000–29,999</option><option value="30000-39999">฿30,000–39,999</option><option value="40000-49999">฿40,000–49,999</option><option value="50000-999999">฿50,000+</option></select>
-  <div class="statusBox"><b>DATA STATUS / 数据状态</b><p>渠道：KA / 家电 / 建材 / Hypermarket / 电商 / 直营 / 经销商</p><p>品类：SBS / CD / 1D / TM</p><p>CD定义：Cross Door，4门及以上</p><p>SBS：全部容量，不限 600L+</p><p>图片：支持图片 URL</p><p>销量：只显示已填数据</p><p>价格：促销价优先</p><p>数据源：Google Sheets CSV</p></div>
-</aside>
-<main class="main">
-  <section class="stats" id="stats"></section>
-  <section class="categoryBattle" id="categoryBattle"><div class="sectionTitle"><div><div class="eyebrow blue">CATEGORY BATTLE</div><h2>CD / TM / 1D 阵容地图</h2></div><span>泰国市场在售样本 · 价格持续更新</span></div><div class="catTabs"><button class="catTab active" data-cat="CD">CD · Cross Door ≥4 Door</button><button class="catTab" data-cat="TM">TM · Top Mount</button><button class="catTab" data-cat="1D">1D · Single Door</button></div><div id="categoryMap"></div><div class="catNote">注：这里先放入已检索到的泰国市场真实在售/零售页面样本；月销量未有可靠公开口径时不填，避免虚构。后续可继续扩成全市场 SKU。</div></section>
-  <section class="mapSection"><div class="sectionTitle"><div><div class="eyebrow blue">PRICE MAP</div><h2>品牌价格对阵</h2></div><span>横向品牌 · 纵向价格 · 点击产品看详情</span></div><div class="mapWrap" id="mapWrap"></div></section>
-  <section class="chartSection"><div class="sectionTitle"><div><div class="eyebrow blue">BUBBLE MAP</div><h2>价格 × 容量 × 月销量</h2></div><span>气泡越大 = 已录入销量越高</span></div><div class="chartWrap" id="bubbleChart"></div></section>
-  <section class="tableSection"><div class="sectionTitle"><div><div class="eyebrow blue">PRODUCT LIST</div><h2>竞品明细</h2></div><span id="tableCount"></span></div><div class="tableWrap"><table><thead><tr><th>产品</th><th>品牌 / 渠道</th><th>容量</th><th>促销价</th><th>原价</th><th>月销量</th><th>门板 / 制冰</th><th>更新时间</th></tr></thead><tbody id="productTable"></tbody></table></div></section>
-  <section class="sheetPanel"><div class="sectionTitle"><div><div class="eyebrow blue">DATA SOURCE</div><h2>Google Sheets 数据源</h2></div></div><p>把 Google Sheet 发布为 CSV 后粘贴地址。以后你只维护表格，网页即可读取最新阵容。渠道支持多个渠道，用 <b>|</b> 分隔，例如：Power Buy|HomePro|Big C|Lotus's|Shopee。</p><div class="sourceRow"><input id="sheetUrl" placeholder="https://docs.google.com/spreadsheets/d/.../export?format=csv"><button id="saveUrl">保存地址</button><button id="loadSheet" class="primary">读取 Sheet</button></div><span id="sourceMsg">当前使用内置市场样本</span><details><summary>字段模板</summary><code>brand,model,image,type,channelType,channel,store,onlineOffline,grossL,netL,door,iceMaker,officialPrice,promoPrice,monthlySales,sellingPoints,updated,link</code></details></section>
-</main></div>
-<div class="modal" id="modal"><div class="modalCard"><button class="close" id="closeModal">×</button><div id="modalBody"></div></div></div>
-<script src="app.js"></script>
-<script>
-(function(){
-  const sel=document.getElementById('type');
-  const categories=[['SBS','SBS / Side-by-Side'],['CD','CD / Cross Door（4门及以上）'],['1D','1D / Single Door'],['TM','TM / Top Mount']];
-  const existing=new Set([...sel.options].map(o=>o.value));
-  categories.forEach(([v,t])=>{if(!existing.has(v)){const o=document.createElement('option');o.value=v;o.textContent=t;sel.appendChild(o)}});
 
-  const data={
-    CD:[
-      ['Hitachi','R-WB700VTH2','645L','฿38,490','4 Door','https://hitachi-homeappliances.com/th/th/products/refrigerators/french-bottom-freezer/r-wb700vth2.html'],
-      ['Hitachi','R-WB640VF GBK','约569L','฿35,990','4 Door','https://www.central.co.th/en/discover/refrigerator-19-22-cubic'],
-      ['Hitachi','RWB640VFX MIR','约569L','฿54,990','4 Door','https://www.central.co.th/en/discover/refrigerator-19-22-cubic'],
-      ['Toshiba','GR-RF611WI-PMTH(60)','约473L','฿18,391','4 Door','https://www.central.co.th/th/home-appliances/large-appliances/refrigerators/multi-doors-refrigerators'],
-      ['Toshiba','GR-RF895WIA-PGTH(22)','约710L','฿45,990','4 Door','https://www.central.co.th/th/home-appliances/large-appliances/refrigerators/multi-doors-refrigerators'],
-      ['Mitsubishi Electric','MR-LA65EY-GBK','约580L','฿31,851','4 Door','https://www.powerbuy.co.th/th/promotion/cooling-items-refrigerator'],
-      ['Mitsubishi Electric','MR-LX50EY-GBK','约443L','฿23,391','4 Door','https://www.powerbuy.co.th/th/search/%E0%B8%95%E0%B8%B9%E0%B9%89%E0%B9%80%E0%B8%A2%E0%B9%87%E0%B8%996.4%E0%B8%84%E0%B8%B4%E0%B8%A7'],
-      ['Electrolux','EQE6179B-B','约609L','฿45,990','4 Door','https://www.central.co.th/en/discover/refrigerator-19-22-cubic'],
-      ['Electrolux','EQE5300A-B','约520L','฿59,990','4 Door','https://www.central.co.th/th/home-appliances/large-appliances/refrigerators/multi-doors-refrigerators'],
-      ['Hisense','RQ662N4TWU','约510L','฿27,990','4 Door','https://www.central.co.th/th/home-appliances/large-appliances/refrigerators/multi-doors-refrigerators'],
-      ['Haier','HRF-MD469WG','约456L','฿22,900','4 Door','https://th.my-best.com/51424'],
-      ['TCL','RT43MPCDG','约394L','—','4 Door','https://th.my-best.com/51424'],
-      ['LG','GC-G24FFQKB.AEEPLM1','约637L','฿52,110','4 Door','https://www.powerbuy.co.th/th/search/%E0%B8%95%E0%B8%B9%E0%B9%89%E0%B9%80%E0%B8%A2%E0%B9%87%E0%B8%995.5%E0%B8%84%E0%B8%B4%E0%B8%A7'],
-      ['Samsung','RF60A91R177/ST','599L','—','4 Door','https://www.samsung.com/th/refrigerators/multi-door/rf9000ac-598l-white-rf60a91r177-st/']
-    ],
-    TM:[
-      ['Samsung','RT20HAR1DSA/ST','约208L / 7.3Q','฿6,990','2 Door','https://www.powerbuy.co.th/th/promotion/ref-2-doors-full-function'],
-      ['Samsung','RT38CG6020B1ST','约394L / 13.9Q','฿9,990','2 Door','https://www.powerbuy.co.th/th/search/%E0%B8%95%E0%B8%B9%E0%B9%89%E0%B9%80%E0%B8%A2%E0%B9%87%E0%B8%992%E0%B8%9B%E0%B8%A3%E0%B8%B0%E0%B8%95%E0%B8%B9'],
-      ['Samsung','RT42CG6644S9ST','约416L / 14.7Q','฿16,490','2 Door','https://www.powerbuy.co.th/th/promotion/installment-10-month-ref'],
-      ['Samsung','RT53DG7A14S9ST','约529L / 18.7Q','฿21,990','2 Door','https://www.powerbuy.co.th/th/promotion/cooling-items'],
-      ['Toshiba','GR-RT268WE-PMTH(68)','约207L / 7.3Q','฿6,790','2 Door','https://www.powerbuy.co.th/th/promotion/installment-10-month-ref'],
-      ['Toshiba','GR-RT310WE-PMTH(50)','约238L / 8.4Q','฿7,490','2 Door','https://www.powerbuy.co.th/th/promotion/installment-10-month-ref'],
-      ['Toshiba','GR-RT466WE-PMTH(52)','约337L / 11.9Q','฿8,790','2 Door','https://www.powerbuy.co.th/th/promotion/ref-2-doors-full-function'],
-      ['Toshiba','GR-RT624WE-PMT(06)','约462L / 16.3Q','฿12,490','2 Door','https://www.powerbuy.co.th/th/promotion/ref-2-doors-full-function'],
-      ['LG','GN-B212PQNF.AEPPLMT','约218L / 7.7Q','฿8,690','2 Door','https://www.powerbuy.co.th/th/search/%E0%B8%95%E0%B8%B9%E0%B9%89%E0%B9%80%E0%B8%A2%E0%B9%87%E0%B8%992%E0%B8%9B%E0%B8%A3%E0%B8%B0%E0%B8%95%E0%B8%B9'],
-      ['LG','GN-B252PQSF.ADSPLMT','约266L / 9.4Q','฿9,490','2 Door','https://www.powerbuy.co.th/th/search/%E0%B8%95%E0%B8%B9%E0%B9%89%E0%B9%80%E0%B8%A2%E0%B9%87%E0%B8%992%E0%B8%9B%E0%B8%A3%E0%B8%B0%E0%B8%95%E0%B8%B9'],
-      ['LG','GN-B452PFFQ.APYPLMT','约461L / 16.3Q','฿12,990','2 Door','https://www.powerbuy.co.th/th/search/%E0%B8%95%E0%B8%B9%E0%B9%89%E0%B8%B0%E0%B9%80%E0%B8%A2%E0%B9%87%E0%B8%99%202%20%E0%B8%9B%E0%B8%A3%E0%B8%B0%E0%B8%95%E0%B8%B9'],
-      ['Haier','HRF-209MNI','约215L / 7.6Q','฿6,990','2 Door','https://www.powerbuy.co.th/th/promotion/ref-2-doors-full-function'],
-      ['Haier','HRF-285MNI','约283L / 10Q','฿8,790','2 Door','https://www.powerbuy.co.th/th/promotion/ref-2-doors-full-function'],
-      ['Haier','HRF-460MGI','约453L / 16Q','฿14,490','2 Door','https://www.powerbuy.co.th/th/search/%E0%B8%95%E0%B8%B9%E0%B9%89%E0%B9%80%E0%B8%A2%E0%B9%87%E0%B8%992%E0%B8%9B%E0%B8%A3%E0%B8%B9'],
-      ['Hitachi','HRTN5230MXTH','约209L / 7.4Q','฿8,190','2 Door','https://www.powerbuy.co.th/th/promotion/ref-2-doors-full-function'],
-      ['Hitachi','HRTN6408SXTH','约374L / 13.2Q','฿10,999','2 Door','https://www.powerbuy.co.th/th/search/%E0%B8%95%E0%B8%B9%E0%B9%89%E0%B9%80%E0%B8%A2%E0%B9%87%E0%B8%992%E0%B8%9B%E0%B8%A3%E0%B8%B0%E0%B8%95%E0%B8%B9'],
-      ['Mitsubishi Electric','MR-FC31EY-SSL','约289L / 10.2Q','฿11,190','2 Door','https://www.powerbuy.co.th/th/promotion/cooling-items-refrigerator']
-    ],
-    '1D':[
-      ['Toshiba','GR-D149MS','约147L / 5.2Q','฿4,690','1 Door','https://www.powerbuy.co.th/th/category/home-appliance/refrigerators/one-door-refrigerators'],
-      ['Toshiba','GR-D189MS','约181L / 6.4Q','฿4,990','1 Door','https://www.powerbuy.co.th/th/category/home-appliance/refrigerators/one-door-refrigerators'],
-      ['Toshiba','GR-D906MG','约88L / 3.1Q','฿4,490','1 Door','https://www.powerbuy.co.th/th/category/home-appliance/refrigerators/one-door-refrigerators'],
-      ['Toshiba','GR-D706MS','约48L / 1.7Q','฿4,290','1 Door','https://www.powerbuy.co.th/th/category/home-appliance/refrigerators/one-door-refrigerators'],
-      ['Haier','HR-SD159F','约150L / 5.3Q','฿4,890','1 Door','https://www.powerbuy.co.th/th/category/home-appliance/refrigerators/one-door-refrigerators'],
-      ['Haier','HR-SD199F','约187L / 6.6Q','฿4,990','1 Door','https://www.powerbuy.co.th/th/category/home-appliance/refrigerators/one-door-refrigerators'],
-      ['LG','GN-Y331SLS.APZPLMT','约195L / 6.9Q','฿5,990','1 Door','https://www.powerbuy.co.th/th/category/home-appliance/refrigerators/one-door-refrigerators'],
-      ['LG','GC-B081PQCF.ADVPLMT','约88L / 3.1Q','฿3,690','1 Door','https://www.powerbuy.co.th/th/category/home-appliance/refrigerators/one-door-refrigerators'],
-      ['Hisense','RR239D4TGN','约184L / 6.5Q','฿5,290','1 Door','https://www.powerbuy.co.th/th/category/home-appliance/refrigerators/one-door-refrigerators'],
-      ['Hisense','RR209D4TBN','155L / 5.5Q','฿5,090','1 Door','https://www.powerbuy.co.th/th/product/hisense-single-door-refrigerator-5-5-cubic-rr209d4tbn-black-285084'],
-      ['Hitachi','HR1S5141MNGTH','约142L / 5Q','฿4,990','1 Door','https://www.powerbuy.co.th/th/category/home-appliance/refrigerators/one-door-refrigerators'],
-      ['Hitachi','HR1S5187MNGTH','约187L / 6.6Q','฿5,490','1 Door','https://www.powerbuy.co.th/th/category/home-appliance/refrigerators/one-door-refrigerators'],
-      ['Sharp','SJ-S150XT-SL','约153L / 5.4Q','฿4,890','1 Door','https://priceded.com/best-single-door-refrigerators/'],
-      ['TCL','RT09XFSDB','约91L / 3.2Q','฿3,690','1 Door','https://www.powerbuy.co.th/th/category/home-appliance/refrigerators/one-door-refrigerators'],
-      ['Mitsubishi Electric','MR-18TA-MB','约173L / 6.1Q','฿6,790','1 Door','https://www.powerbuy.co.th/th/category/home-appliance/refrigerators/one-door-refrigerators'],
-      ['Electrolux','EUM0500AD-TH','约42L / 1.5Q','฿4,190','1 Door','https://www.powerbuy.co.th/th/category/home-appliance/refrigerators/one-door-refrigerators']
-    ]
-  };
-  const colors={Samsung:'#2372c7',LG:'#c51d48',Toshiba:'#e01c73',Haier:'#0874c9',Hitachi:'#ec6a2c',Hisense:'#078f91',Sharp:'#7c55c8',TCL:'#ef7b25','Mitsubishi Electric':'#555','Electrolux':'#2f8c69'};
-  function renderCat(cat){
-    const rows=data[cat]||[];
-    const bands={};
-    rows.forEach(r=>{const p=parseFloat((r[3]||'').replace(/[^0-9.]/g,''));const key=Number.isFinite(p)?(p<10000?'低价 / <฿10K':p<20000?'主流 / ฿10–20K':p<35000?'中高 / ฿20–35K':'高端 / >฿35K'):'价格待补';(bands[key]??=[]).push(r)});
-    const order=['高端 / >฿35K','中高 / ฿20–35K','主流 / ฿10–20K','低价 / <฿10K','价格待补'];
-    let h='';
-    order.filter(k=>bands[k]).forEach(k=>{h+=`<div class="catBand"><div class="catBandTitle">${k}<span>${bands[k].length} SKU</span></div><div class="catGrid">${bands[k].map(r=>`<a class="catCard" href="${r[5]}" target="_blank" rel="noopener"><div class="catLogo" style="--c:${colors[r[0]]||'#07878a'}">${r[0].slice(0,2).toUpperCase()}</div><div class="catBody"><b>${r[0]}</b><strong>${r[1]}</strong><small>${r[2]} · ${r[4]}</small><em>${r[3]}</em></div></a>`).join('')}</div></div>`});
-    document.getElementById('categoryMap').innerHTML=h;
-  }
-  document.querySelectorAll('.catTab').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.catTab').forEach(x=>x.classList.remove('active'));b.classList.add('active');renderCat(b.dataset.cat)}));
-  renderCat('CD');
-  const st=document.createElement('style');st.textContent=`.categoryBattle{margin-bottom:24px}.catTabs{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}.catTab{border:1px solid #d7dee5;background:#fff;border-radius:999px;padding:9px 14px;font-weight:700;cursor:pointer}.catTab.active{background:#0b7f83;color:#fff;border-color:#0b7f83}.catBand{margin:12px 0 18px}.catBandTitle{font-size:13px;font-weight:800;color:#334155;margin:0 0 8px;display:flex;justify-content:space-between}.catBandTitle span{font-weight:500;color:#7a8794}.catGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}.catCard{display:flex;gap:10px;align-items:center;background:#fff;border:1px solid #e1e7eb;border-radius:12px;padding:10px;text-decoration:none;color:inherit;box-shadow:0 2px 8px rgba(15,23,42,.04);transition:.15s}.catCard:hover{transform:translateY(-2px);box-shadow:0 7px 18px rgba(15,23,42,.08)}.catLogo{width:42px;height:42px;min-width:42px;border-radius:10px;background:var(--c);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px}.catBody{min-width:0;display:grid;gap:3px}.catBody b{font-size:11px;color:#667085}.catBody strong{font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.catBody small{font-size:10px;color:#7b8794}.catBody em{font-size:14px;font-style:normal;font-weight:900;color:#111827}.catNote{font-size:11px;color:#7b8794;margin-top:8px;line-height:1.6}`;document.head.appendChild(st);
-})();
-</script>
-</body></html>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="filterHead"><b>FILTERS / 筛选</b><button id="reset">Reset</button></div>
+    <label>Search model / 搜索型号</label>
+    <input id="search" placeholder="例如 Inverter, RS808...">
+
+    <label>Channel / 渠道</label>
+    <select id="channel"><option value="">All / 全部</option></select>
+
+    <label>Brand / 品牌</label>
+    <select id="brand"><option value="">All / 全部</option></select>
+
+    <label>Category / 品类</label>
+    <select id="type"><option value="">All / 全部</option></select>
+
+    <label>Capacity / 容量</label>
+    <select id="capacity">
+      <option value="">All capacity / 全部</option>
+      <option value="600+">600L+</option>
+      <option value="500-599">500–599L</option>
+      <option value="400-499">400–499L</option>
+      <option value="300-399">300–399L</option>
+    </select>
+
+    <label>Price / 价格</label>
+    <select id="price">
+      <option value="">All price / 全部</option>
+      <option value="0-29999">฿30,000 以下</option>
+      <option value="30000-49999">฿30,000–49,999</option>
+      <option value="50000-79999">฿50,000–79,999</option>
+      <option value="80000-999999">฿80,000+</option>
+    </select>
+
+    <div class="statusBox">
+      <b>DATA STATUS / 数据状态</b>
+      <p>内置市场样本 · 可接 Google Sheets</p>
+      <p>价格：促销价优先</p>
+      <p>销量：未填不估算</p>
+    </div>
+  </aside>
+
+  <main class="main">
+    <section class="stats" id="stats"></section>
+
+    <section class="mapSection">
+      <div class="sectionTitle">
+        <div><div class="eyebrow blue">PRICE MAP</div><h2 id="mapTitle">All / 全部</h2></div>
+        <span>Promo price high to low · 点击产品打开零售商页面</span>
+      </div>
+      <div class="mapWrap" id="mapWrap"></div>
+    </section>
+
+    <section class="sheetPanel">
+      <div class="sectionTitle"><div><div class="eyebrow blue">DATA SOURCE</div><h2>Google Sheets 数据源</h2></div></div>
+      <p>把 Google Sheet 发布为 CSV 后粘贴地址。以后你只需要维护表格，页面即可读取最新阵容。</p>
+      <div class="sourceRow"><input id="sheetUrl" placeholder="https://docs.google.com/spreadsheets/d/.../export?format=csv"><button id="saveUrl">保存地址</button><button id="loadSheet" class="primary">读取 Sheet</button></div>
+      <span id="sourceMsg">当前使用内置市场样本</span>
+      <details><summary>字段模板</summary><code>brand, model, image, type, channel, grossL, netL, door, iceMaker, officialPrice, promoPrice, monthlySales, sellingPoints, updated, link</code></details>
+    </section>
+  </main>
+</div>
+<script src="app.js"></script>
+</body>
+</html>
