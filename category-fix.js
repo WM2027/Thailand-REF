@@ -1,4 +1,4 @@
-// Category selector + CD / Cross Door market sample data
+// Category selector + CD / TM market sample data
 (function () {
   const categoryOptions = [
     ['', 'All / 全部'],
@@ -8,7 +8,7 @@
     ['1D', '1D / Single Door']
   ];
 
-  // Thailand retail examples checked 2026-09-15.
+  // Thailand retail examples checked 2026-09-16.
   // Price = current promotional/listing price; monthly sales is left blank unless verified.
   const cdProducts = [
     {brand:'Toshiba',model:'GR-RF677WI-PMTH(06)',image:'',type:'CD',channel:'HomePro',channelType:'家居建材连锁',store:'',onlineOffline:'Online + Offline',grossL:515,netL:515,door:'深灰色',iceMaker:'Yes',officialPrice:27990,promoPrice:23790,monthlySales:'',sellingPoints:'515L / 4门 / Origin Inverter / Surrounding Cooling / Pure Air',updated:'2026-09-15',link:'https://www.homepro.co.th/p/1291901'},
@@ -22,6 +22,21 @@
     {brand:'Hisense',model:'RQ640P5GB',image:'',type:'CD',channel:'HomePro',channelType:'家居建材连锁',store:'',onlineOffline:'Online + Offline',grossL:660,netL:660,door:'黑色玻璃',iceMaker:'Yes',officialPrice:44990,promoPrice:37990,monthlySales:'',sellingPoints:'660L / 4门 / Dual-Tech Cooling / My Fresh Choice / Inverter',updated:'2026-09-15',link:'https://www.homepro.co.th/p/1317883'}
   ];
 
+  // TM / Top Mount: current Thailand HomePro examples checked 2026-09-16.
+  const tmProducts = [
+    {brand:'Toshiba',model:'GR-RT624WE-PMT(06)',image:'',type:'TM',channel:'HomePro',channelType:'家居建材连锁',store:'',onlineOffline:'Online + Offline',grossL:463,netL:463,door:'灰色钢板',iceMaker:'Manual Twist',officialPrice:20990,promoPrice:12290,monthlySales:'',sellingPoints:'463L / 16.4Q / Origin Inverter / Air Fall Cooling / Pure BIO',updated:'2026-09-16',link:'https://www.homepro.co.th/p/1168857'},
+    {brand:'Toshiba',model:'GR-RT558WE-PMT(52)',image:'',type:'TM',channel:'HomePro',channelType:'家居建材连锁',store:'',onlineOffline:'Online + Offline',grossL:410,netL:410,door:'蓝色钢板',iceMaker:'Manual Twist',officialPrice:14990,promoPrice:9490,monthlySales:'',sellingPoints:'约410L / 14.5Q / Inverter / Top Mount',updated:'2026-09-16',link:'https://www.homepro.co.th/'},
+    {brand:'Toshiba',model:'GR-RT466WE-PMTH(52)',image:'',type:'TM',channel:'HomePro',channelType:'家居建材连锁',store:'',onlineOffline:'Online + Offline',grossL:337,netL:337,door:'深蓝钢板',iceMaker:'Manual Twist',officialPrice:13990,promoPrice:8990,monthlySales:'',sellingPoints:'约337L / 11.9Q / Inverter / Top Mount',updated:'2026-09-16',link:'https://www.homepro.co.th/'},
+    {brand:'Samsung',model:'RT47CG6644S9ST',image:'',type:'TM',channel:'HomePro',channelType:'家居建材连锁',store:'',onlineOffline:'Online + Offline',grossL:465,netL:465,door:'银色钢板',iceMaker:'Yes',officialPrice:17990,promoPrice:14990,monthlySales:'',sellingPoints:'465L / 16.4Q / Digital Inverter / SmartThings',updated:'2026-09-16',link:'https://www.homepro.co.th/p/1230284'},
+    {brand:'Samsung',model:'RT42CG6644S9ST',image:'',type:'TM',channel:'HomePro',channelType:'家居建材连锁',store:'',onlineOffline:'Online + Offline',grossL:415,netL:415,door:'银色钢板',iceMaker:'Yes',officialPrice:16490,promoPrice:10990,monthlySales:'',sellingPoints:'415L / 14.7Q / Digital Inverter / SmartThings',updated:'2026-09-16',link:'https://www.homepro.co.th/p/1230257'},
+    {brand:'Samsung',model:'RT38CG6684B1ST',image:'',type:'TM',channel:'HomePro',channelType:'家居建材连锁',store:'',onlineOffline:'Online + Offline',grossL:385,netL:385,door:'黑色钢板',iceMaker:'Yes',officialPrice:17990,promoPrice:16290,monthlySales:'',sellingPoints:'385L / 13.6Q / Digital Inverter / Smart features',updated:'2026-09-16',link:'https://www.homepro.co.th/p/1233760'},
+    {brand:'Samsung',model:'RT38CG6020B1ST',image:'',type:'TM',channel:'HomePro',channelType:'家居建材连锁',store:'',onlineOffline:'Online + Offline',grossL:395,netL:395,door:'黑色钢板',iceMaker:'No',officialPrice:14490,promoPrice:9990,monthlySales:'',sellingPoints:'约395L / 13.9Q / Digital Inverter / All Around Cooling',updated:'2026-09-16',link:'https://www.homepro.co.th/p/1233801'},
+    {brand:'Samsung',model:'RT25FGRADB1/ST',image:'',type:'TM',channel:'HomePro',channelType:'家居建材连锁',store:'',onlineOffline:'Online + Offline',grossL:255,netL:255,door:'Black Matt',iceMaker:'No',officialPrice:10490,promoPrice:8490,monthlySales:'',sellingPoints:'约255L / 9Q / Digital Inverter / All Around Cooling',updated:'2026-09-16',link:'https://www.homepro.co.th/p/1177504'},
+    {brand:'Haier',model:'HRF-490IWMGIU1',image:'',type:'TM',channel:'HomePro',channelType:'家居建材连锁',store:'',onlineOffline:'Online + Offline',grossL:472,netL:472,door:'蓝色玻璃',iceMaker:'Manual Twist',officialPrice:21990,promoPrice:20490,monthlySales:'',sellingPoints:'472L / 16.7Q / 玻璃门 / Top Mount',updated:'2026-09-16',link:'https://www.homepro.co.th/p/1289043'},
+    {brand:'Haier',model:'HRF-BM329MI',image:'',type:'TM',channel:'HomePro',channelType:'家居建材连锁',store:'',onlineOffline:'Online + Offline',grossL:324,netL:324,door:'黑色钢板',iceMaker:'No',officialPrice:15990,promoPrice:14990,monthlySales:'',sellingPoints:'324L / 11.4Q / Inverter / Snow Beverage / Deo Fresh',updated:'2026-09-16',link:'https://www.homepro.co.th/p/1248759'},
+    {brand:'Haier',model:'HRF-350MNI',image:'',type:'TM',channel:'HomePro',channelType:'家居建材连锁',store:'',onlineOffline:'Online + Offline',grossL:357,netL:357,door:'黑色钢板',iceMaker:'No',officialPrice:10990,promoPrice:10490,monthlySales:'',sellingPoints:'357L / 12.6Q / Top Mount / Multi Air Flow',updated:'2026-09-16',link:'https://www.homepro.co.th/p/1214106'}
+  ];
+
   function resetCategoryOptions() {
     const el = document.getElementById('type');
     if (!el) return;
@@ -33,8 +48,9 @@
   try {
     const existing = new Set(products.map(x => x.model));
     products.push(...cdProducts.filter(x => !existing.has(x.model)));
+    products.push(...tmProducts.filter(x => !existing.has(x.model)));
   } catch (e) {
-    console.warn('CD data append failed', e);
+    console.warn('CD/TM data append failed', e);
   }
 
   resetCategoryOptions();
